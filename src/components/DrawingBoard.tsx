@@ -74,11 +74,58 @@ export default function DrawingBoard({
   }
 
   return (
-    <div
-      className="flex h-full w-full touch-none flex-col justify-center gap-5
-      overflow-scroll bg-gray-300"
-    >
-      <div className="sticky left-5 top-5 flex flex-col rounded border bg-white p-5 shadow-md">
+    <div className="flex h-full w-full touch-none overflow-scroll bg-gray-300">
+      <section className="mx-auto h-full">
+        <Stage
+          width={WIDTH}
+          height={HEIGHT}
+          onMouseDown={handleMouseDown}
+          onMouseUp={handleMouseUp}
+          onMouseMove={handleMouseMove}
+          onTouchStart={handleMouseDown}
+          onTouchMove={handleMouseMove}
+          onTouchEnd={handleMouseUp}
+        >
+          <Layer listening={false}>
+            <Rect x={0} y={0} width={WIDTH} height={HEIGHT} fill="#ffffff" />
+          </Layer>
+          <Layer>
+            <Group>
+              {shapes.map((shape, i) => (
+                <MyShape key={i} {...shape} />
+              ))}
+            </Group>
+            <MyShape tool={tool} {...stagedShape} />
+            <MyShape tool={tool} {...shape} />
+          </Layer>
+          <Layer listening={false}>
+            {Object.keys(users).map((user) => {
+              const userData = users[user] as UserData;
+              const { username, shape, color, pos } = userData;
+              return (
+                <>
+                  <Group {...pos}>
+                    <Circle key={user} radius={7} fill={color} />
+                    <Text
+                      text={username}
+                      fill={color}
+                      fontSize={18}
+                      offsetY={7}
+                      offsetX={-8}
+                    />
+                  </Group>
+                  <MyShape
+                    key={user + "C"}
+                    tool={shape?.tool || ""}
+                    {...shape}
+                  />
+                </>
+              );
+            })}
+          </Layer>
+        </Stage>
+      </section>
+      <section className="sticky left-5 top-5 flex flex-col rounded border bg-white p-5 shadow-xl">
         <select value={tool} onChange={(e) => setTool(e.target.value as Tool)}>
           <option value="line">line</option>
           <option value="rectangle">rectangle</option>
@@ -90,60 +137,16 @@ export default function DrawingBoard({
           value={color}
           onChange={(e) => setColor(e.target.value)}
         />
-      </div>
-      <div>
-        <input
-          type="range"
-          min={1}
-          max={100}
-          value={size}
-          onChange={(e) => setSize(+e.target.value)}
-        />
-      </div>
-      <Stage
-        width={WIDTH}
-        height={HEIGHT}
-        onMouseDown={handleMouseDown}
-        onMouseUp={handleMouseUp}
-        onMouseMove={handleMouseMove}
-        onTouchStart={handleMouseDown}
-        onTouchMove={handleMouseMove}
-        onTouchEnd={handleMouseUp}
-      >
-        <Layer listening={false}>
-          <Rect x={0} y={0} width={WIDTH} height={HEIGHT} fill="#ffffff" />
-        </Layer>
-        <Layer>
-          <Group>
-            {shapes.map((shape, i) => (
-              <MyShape key={i} {...shape} />
-            ))}
-          </Group>
-          <MyShape tool={tool} {...stagedShape} />
-          <MyShape tool={tool} {...shape} />
-        </Layer>
-        <Layer listening={false}>
-          {Object.keys(users).map((user) => {
-            const userData = users[user] as UserData;
-            const { username, shape, color, pos } = userData;
-            return (
-              <>
-                <Group {...pos}>
-                  <Circle key={user} radius={7} fill={color} />
-                  <Text
-                    text={username}
-                    fill={color}
-                    fontSize={18}
-                    offsetY={7}
-                    offsetX={-8}
-                  />
-                </Group>
-                <MyShape key={user + "C"} tool={shape?.tool || ""} {...shape} />
-              </>
-            );
-          })}
-        </Layer>
-      </Stage>
+        <div>
+          <input
+            type="range"
+            min={1}
+            max={100}
+            value={size}
+            onChange={(e) => setSize(+e.target.value)}
+          />
+        </div>
+      </section>
     </div>
   );
 }
