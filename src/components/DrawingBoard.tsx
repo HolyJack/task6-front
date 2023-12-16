@@ -9,8 +9,8 @@ import {
   MyShapeConfigsWithTool,
 } from "../utils/Shapes/ShapeTypes";
 
-export const WIDTH = 1024 * 2;
-export const HEIGHT = 1024 * 2;
+export const WIDTH = 1024;
+export const HEIGHT = 1024;
 
 export default function DrawingBoard({
   username,
@@ -48,10 +48,7 @@ export default function DrawingBoard({
     setShape(initShape({ color, size, pos }));
   }
 
-  function handleMouseUp(
-    e: KonvaEventObject<MouseEvent> | KonvaEventObject<TouchEvent>,
-  ) {
-    e.target.preventDefault();
+  function handleMouseUp() {
     isDrawing.current = false;
     if (shape && tool) submitShape({ tool, color, ...shape });
     setStagedShape(() => {
@@ -77,7 +74,7 @@ export default function DrawingBoard({
   }
 
   return (
-    <div className="h-full w-full overflow-scroll bg-gray-300">
+    <div className="h-full w-full touch-none overflow-scroll bg-gray-300">
       <div>
         <select value={tool} onChange={(e) => setTool(e.target.value as Tool)}>
           <option value="line">line</option>
@@ -109,15 +106,14 @@ export default function DrawingBoard({
         onTouchStart={handleMouseDown}
         onTouchMove={handleMouseMove}
         onTouchEnd={handleMouseUp}
-        style={{ touchAction: "none" }}
       >
         <Layer listening={false}>
           <Rect x={0} y={0} width={WIDTH} height={HEIGHT} fill="#ffffff" />
-        </Layer>
-        <Layer listening={false}>
-          {shapes.map((shape, i) => (
-            <MyShape key={i} {...shape} />
-          ))}
+          <Group>
+            {shapes.map((shape, i) => (
+              <MyShape key={i} {...shape} />
+            ))}
+          </Group>
           <MyShape tool={tool} {...stagedShape} />
           <MyShape tool={tool} {...shape} />
         </Layer>
