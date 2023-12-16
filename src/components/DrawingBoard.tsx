@@ -107,8 +107,6 @@ export default function DrawingBoard({
           {shapes.map((shape, i) => (
             <MyShape key={i} {...shape} />
           ))}
-        </Layer>
-        <Layer>
           <MyShape tool={tool} {...stagedShape} />
           <MyShape tool={tool} {...shape} />
         </Layer>
