@@ -80,7 +80,7 @@ export default function App() {
 
   function submitForm(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setUsername(e.currentTarget.value);
+    setUsername(enteredname);
     setEnteredname("");
   }
 
