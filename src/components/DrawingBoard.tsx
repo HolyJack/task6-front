@@ -109,6 +109,7 @@ export default function DrawingBoard({
         onTouchStart={handleMouseDown}
         onTouchMove={handleMouseMove}
         onTouchEnd={handleMouseUp}
+        style={{ touchAction: "none" }}
       >
         <Layer listening={false}>
           <Rect x={0} y={0} width={WIDTH} height={HEIGHT} fill="#ffffff" />
