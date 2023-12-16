@@ -75,10 +75,10 @@ export default function DrawingBoard({
 
   return (
     <div
-      className="flex h-full w-full touch-none flex-col justify-center overflow-scroll
-      bg-gray-300"
+      className="flex h-full w-full touch-none flex-col justify-center gap-5
+      overflow-scroll bg-gray-300"
     >
-      <div className="absolute flex flex-col rounded border bg-white p-5 shadow-md">
+      <div className="sticky left-5 top-5 flex flex-col rounded border bg-white p-5 shadow-md">
         <select value={tool} onChange={(e) => setTool(e.target.value as Tool)}>
           <option value="line">line</option>
           <option value="rectangle">rectangle</option>
