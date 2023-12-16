@@ -98,7 +98,7 @@ export default function App() {
             />
             <button
               type="submit"
-              className="h-10 w-20 rounded-md border shadow-md"
+              className="h-10 w-20 rounded-md border shadow-md hover:bg-black/10"
             >
               OK
             </button>
