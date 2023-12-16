@@ -5,7 +5,6 @@ import line from "./Line";
 const initEraser: InitShapeFunction<LineConfig> = (shape) => {
   return {
     ...line.init(shape),
-    stroke: undefined,
     globalCompositeOperation: "destination-out",
   };
 };
