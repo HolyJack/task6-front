@@ -39,7 +39,9 @@ export default function DrawingBoard({
     setStagedShape(undefined);
   }, [shapes]);
 
-  function handleMouseDown(e: KonvaEventObject<MouseEvent>) {
+  function handleMouseDown(
+    e: KonvaEventObject<MouseEvent> | KonvaEventObject<TouchEvent>,
+  ) {
     isDrawing.current = true;
     const pos = e.target.getStage()?.getPointerPosition();
     if (!pos) return;
@@ -56,7 +58,9 @@ export default function DrawingBoard({
     });
   }
 
-  function handleMouseMove(e: KonvaEventObject<MouseEvent>) {
+  function handleMouseMove(
+    e: KonvaEventObject<MouseEvent> | KonvaEventObject<TouchEvent>,
+  ) {
     const pos = e.target.getStage()?.getPointerPosition();
     if (!pos) return;
     if (isDrawing && shape) setShape(updateShape(shape, pos));
@@ -99,6 +103,9 @@ export default function DrawingBoard({
         onMouseDown={handleMouseDown}
         onMouseUp={handleMouseUp}
         onMouseMove={handleMouseMove}
+        onTouchStart={handleMouseDown}
+        onTouchMove={handleMouseMove}
+        onTouchEnd={handleMouseUp}
       >
         <Layer listening={false}>
           <Rect x={0} y={0} width={WIDTH} height={HEIGHT} fill="#ffffff" />
