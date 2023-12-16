@@ -27,6 +27,7 @@ export default function App() {
   >({});
   const [users, setUsers] = useState<Users>({});
   const [username, setUsername] = useState("");
+  const [enteredname, setEnteredname] = useState("");
 
   useEffect(() => {
     function onConnect() {
@@ -77,32 +78,46 @@ export default function App() {
     };
   }, []);
 
+  function submitForm(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setUsername(e.currentTarget.value);
+    setEnteredname("");
+  }
+
   return (
     <div className="flex h-screen w-screen flex-col">
-      {isConnected && !room && (
-        <>
-          <div className="flex w-full justify-center p-10">
+      {isConnected && !room && !enteredname && (
+        <div className="flex w-full justify-center p-10">
+          <form onSubmit={submitForm} className=" flex gap-2">
             <input
               type="text"
               className="border p-2 shadow"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              value={enteredname}
+              onChange={(e) => setEnteredname(e.target.value)}
               placeholder="Enter your username"
             />
-          </div>
-          <div className="flex h-full flex-wrap justify-evenly gap-5 p-10">
-            {ROOMS.map((room) => (
-              <RoomJoinButton
-                key={room}
-                value={room}
-                room={room}
-                shapes={preview[room] || []}
-                className="aspect-square h-72 border shadow"
-                disabled={!username}
-              />
-            ))}
-          </div>
-        </>
+            <button className="h-10 w-20">OK</button>
+          </form>
+        </div>
+      )}
+      {isConnected && !room && enteredname && (
+        <div className="flex w-full justify-center p-10">
+          <h2 className="text-xl">{`Welcome ${username}!`}</h2>
+        </div>
+      )}
+      {isConnected && !room && (
+        <div className="flex h-full flex-wrap justify-evenly gap-5 p-10">
+          {ROOMS.map((room) => (
+            <RoomJoinButton
+              key={room}
+              value={room}
+              room={room}
+              shapes={preview[room] || []}
+              className="aspect-square h-72 border shadow"
+              disabled={!username}
+            />
+          ))}
+        </div>
       )}
       {isConnected && room && (
         <DrawingBoard
