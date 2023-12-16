@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { KonvaEventObject } from "konva/lib/Node";
 import { UserData, Users } from "../App";
 import { socket } from "../socket";
-import TypedShapeMap, { Tool } from "../utils/Shapes/Shape";
+import TypedShapeMap, { MyShape, Tool } from "../utils/Shapes/Shape";
 import {
   MyShapeConfigs,
   MyShapeConfigsWithTool,
@@ -32,7 +32,7 @@ export default function DrawingBoard({
   const {
     init: initShape,
     update: updateShape,
-    component: MyShape,
+    component: shapeComponent,
   } = TypedShapeMap[tool as Tool];
 
   function submitShape(shape: MyShapeConfigsWithTool) {
@@ -114,8 +114,8 @@ export default function DrawingBoard({
           ))}
         </Layer>
         <Layer>
-          <MyShape {...stagedShape} />
-          <MyShape {...shape} />
+          <MyShape tool={tool} {...stagedShape} />
+          <MyShape tool={tool} {...shape} />
         </Layer>
         <Layer listening={false}>
           {Object.keys(users).map((user) => {
@@ -133,7 +133,7 @@ export default function DrawingBoard({
                     offsetX={-8}
                   />
                 </Group>
-                <MyShape key={user + "C"} {...shape} />
+                <MyShape key={user + "C"} tool={shape?.tool || ""} {...shape} />
               </>
             );
           })}
