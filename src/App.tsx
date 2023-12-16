@@ -86,7 +86,7 @@ export default function App() {
 
   return (
     <div className="flex h-screen w-screen flex-col">
-      {isConnected && !room && !enteredname && (
+      {isConnected && !room && !username && (
         <div className="flex w-full justify-center p-10">
           <form onSubmit={submitForm} className=" flex gap-2">
             <input
@@ -96,11 +96,13 @@ export default function App() {
               onChange={(e) => setEnteredname(e.target.value)}
               placeholder="Enter your username"
             />
-            <button className="h-10 w-20">OK</button>
+            <button type="submit" className="h-10 w-20">
+              OK
+            </button>
           </form>
         </div>
       )}
-      {isConnected && !room && enteredname && (
+      {isConnected && !room && username && (
         <div className="flex w-full justify-center p-10">
           <h2 className="text-xl">{`Welcome ${username}!`}</h2>
         </div>
