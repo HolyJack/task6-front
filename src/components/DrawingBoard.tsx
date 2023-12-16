@@ -103,10 +103,12 @@ export default function DrawingBoard({
         <Layer listening={false}>
           <Rect x={0} y={0} width={WIDTH} height={HEIGHT} fill="#ffffff" />
         </Layer>
-        <Layer>
+        <Layer listening={false}>
           {shapes.map((shape, i) => (
             <MyShape key={i} {...shape} />
           ))}
+        </Layer>
+        <Layer>
           <MyShape tool={tool} {...stagedShape} />
           <MyShape tool={tool} {...shape} />
         </Layer>
