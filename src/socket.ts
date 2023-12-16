@@ -1,5 +1,5 @@
 import { io } from "socket.io-client";
 
-const URL = "https://ancient-fortress-01607-9de125cb985f.herokuapp.com";
+const URL = "https://drawing-board-backend-8fb2e38f4ebb.herokuapp.com";
 
 export const socket = io(URL);
