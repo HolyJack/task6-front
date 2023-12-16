@@ -96,7 +96,10 @@ export default function App() {
               onChange={(e) => setEnteredname(e.target.value)}
               placeholder="Enter your username"
             />
-            <button type="submit" className="h-10 w-20">
+            <button
+              type="submit"
+              className="h-10 w-20 rounded-md border shadow-md"
+            >
               OK
             </button>
           </form>
