@@ -48,7 +48,10 @@ export default function DrawingBoard({
     setShape(initShape({ color, size, pos }));
   }
 
-  function handleMouseUp() {
+  function handleMouseUp(
+    e: KonvaEventObject<MouseEvent> | KonvaEventObject<TouchEvent>,
+  ) {
+    e.target.preventDefault();
     isDrawing.current = false;
     if (shape && tool) submitShape({ tool, color, ...shape });
     setStagedShape(() => {
