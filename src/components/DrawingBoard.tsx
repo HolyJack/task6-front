@@ -29,11 +29,7 @@ export default function DrawingBoard({
   const [size, setSize] = useState<number>(5);
   const [shape, setShape] = useState<MyShapeConfigs | undefined>();
   const [stagedShape, setStagedShape] = useState<MyShapeConfigs | undefined>();
-  const {
-    init: initShape,
-    update: updateShape,
-    component: shapeComponent,
-  } = TypedShapeMap[tool as Tool];
+  const { init: initShape, update: updateShape } = TypedShapeMap[tool as Tool];
 
   function submitShape(shape: MyShapeConfigsWithTool) {
     socket.emit("new shape", room, shape);
@@ -81,7 +77,6 @@ export default function DrawingBoard({
           <option value="rectangle">rectangle</option>
           <option value="circle">circle</option>
           <option value="eraser">eraser</option>
-          <option value="text">text</option>
         </select>
         <input
           type="color"
