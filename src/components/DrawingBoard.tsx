@@ -1,7 +1,6 @@
-import { Layer, Stage, Rect, Circle, Group, Text } from "react-konva";
+import { Layer, Stage } from "react-konva";
 import { useEffect, useRef, useState } from "react";
 import { KonvaEventObject } from "konva/lib/Node";
-import { UserData, Users } from "../App";
 import { socket } from "../socket";
 import TypedShapeMap, { MyShape, Tool } from "../utils/Shapes/Shape";
 import {

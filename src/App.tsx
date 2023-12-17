@@ -118,18 +118,13 @@ export default function App() {
       )}
       {isConnected && room && (
         <>
+          <DrawingBoard room={room} shapes={shapes} username={username} />
           <button
             className="fixed right-5 top-5 h-10 w-40 border bg-white shadow"
             onClick={leaveRoom}
           >
             Leave room
           </button>
-          <DrawingBoard
-            room={room}
-            shapes={shapes}
-            users={users}
-            username={username}
-          />
         </>
       )}
     </div>
