@@ -1,20 +1,8 @@
 import { useEffect, useState } from "react";
 import { socket } from "./socket";
-import {
-  CursorPosition,
-  MyShapeConfigsWithTool,
-} from "./utils/Shapes/ShapeTypes";
+import { MyShapeConfigsWithTool } from "./utils/Shapes/ShapeTypes";
 import DrawingBoard from "./components/DrawingBoard";
 import RoomJoinButton from "./components/RoomJoinButton";
-
-export type UserData = {
-  username: string;
-  shape?: MyShapeConfigsWithTool;
-  color: string;
-  pos: CursorPosition;
-};
-
-export type Users = Record<string, UserData>;
 
 const ROOMS = ["room1", "room2", "room3", "room4", "room5"];
 
@@ -25,7 +13,6 @@ export default function App() {
   const [preview, setPreview] = useState<
     Record<string, MyShapeConfigsWithTool[]>
   >({});
-  const [users, setUsers] = useState<Users>({});
   const [username, setUsername] = useState(
     sessionStorage.getItem("username") || "",
   );
@@ -48,11 +35,6 @@ export default function App() {
       setShapes(shapes);
     }
 
-    function onBroadcastUsers(users: Users) {
-      delete users[socket.id];
-      setUsers(users);
-    }
-
     function onJoinRoom(room: string, shape: MyShapeConfigsWithTool[]) {
       setShapes(shape);
       setRoom(room);
@@ -63,18 +45,16 @@ export default function App() {
     }
 
     socket.on("connect", onConnect);
-    socket.on("init", onInit);
     socket.on("disconnect", onDisconnect);
+    socket.on("init", onInit);
     socket.on("update shapes", onUpdate);
-    socket.on("broadcast users", onBroadcastUsers);
     socket.on("joined room", onJoinRoom);
     socket.on("preview", onPreview);
     return () => {
       socket.off("connect", onConnect);
-      socket.off("init", onInit);
       socket.off("disconnect", onDisconnect);
+      socket.off("init", onInit);
       socket.off("update shapes", onUpdate);
-      socket.off("broadcast users", onBroadcastUsers);
       socket.off("joined room", onJoinRoom);
       socket.off("preview", onPreview);
     };

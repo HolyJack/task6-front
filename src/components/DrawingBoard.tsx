@@ -8,6 +8,9 @@ import {
   MyShapeConfigs,
   MyShapeConfigsWithTool,
 } from "../utils/Shapes/ShapeTypes";
+import OtherUsers from "./OtherUsers";
+import Background from "./Background";
+import { SubmitedShapes } from "./SubmitedShapes";
 
 export const WIDTH = 1024;
 export const HEIGHT = 1024;
@@ -16,12 +19,10 @@ export default function DrawingBoard({
   username,
   room,
   shapes,
-  users,
 }: {
   username: string;
   room: string;
   shapes: MyShapeConfigsWithTool[];
-  users: Users;
 }) {
   const isDrawing = useRef(false);
   const [tool, setTool] = useState<Tool>("line");
@@ -87,43 +88,13 @@ export default function DrawingBoard({
           onTouchEnd={handleMouseUp}
           onPointerOut={handleMouseUp}
         >
-          <Layer listening={false}>
-            <Rect x={0} y={0} width={WIDTH} height={HEIGHT} fill="#ffffff" />
-          </Layer>
+          <Background />
           <Layer>
-            <Group>
-              {shapes.map((shape, i) => (
-                <MyShape key={i} {...shape} />
-              ))}
-            </Group>
+            <SubmitedShapes shapes={shapes} />
             <MyShape tool={tool} {...stagedShape} />
             <MyShape tool={tool} {...shape} />
           </Layer>
-          <Layer listening={false}>
-            {Object.keys(users).map((user) => {
-              const userData = users[user] as UserData;
-              const { username, shape, color, pos } = userData;
-              return (
-                <>
-                  <Group {...pos}>
-                    <Circle key={user} radius={7} fill={color} />
-                    <Text
-                      text={username}
-                      fill={color}
-                      fontSize={18}
-                      offsetY={7}
-                      offsetX={-8}
-                    />
-                  </Group>
-                  <MyShape
-                    key={user + "C"}
-                    tool={shape?.tool || ""}
-                    {...shape}
-                  />
-                </>
-              );
-            })}
-          </Layer>
+          <OtherUsers />
         </Stage>
       </section>
       <section className="fixed left-5 top-5 flex flex-col rounded border bg-white p-5 shadow-xl">
