@@ -125,7 +125,7 @@ export default function DrawingBoard({
           </Layer>
         </Stage>
       </section>
-      <section className="sticky left-5 top-5 flex flex-col rounded border bg-white p-5 shadow-xl">
+      <section className="fixed left-5 top-5 flex flex-col rounded border bg-white p-5 shadow-xl">
         <select value={tool} onChange={(e) => setTool(e.target.value as Tool)}>
           <option value="line">line</option>
           <option value="rectangle">rectangle</option>
