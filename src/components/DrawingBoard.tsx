@@ -77,7 +77,7 @@ export default function DrawingBoard({
           onPointerOut={handleMouseUp}
         >
           <Background />
-          <Layer>
+          <Layer listening={false}>
             <SubmitedShapes />
             <MyShape tool={tool} {...shape} />
           </Layer>
