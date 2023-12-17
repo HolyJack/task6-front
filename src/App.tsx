@@ -16,7 +16,7 @@ export type UserData = {
 
 export type Users = Record<string, UserData>;
 
-const ROOMS = ["room1", "room2", "room3", "room4"];
+const ROOMS = ["room1", "room2", "room3", "room4", "room5"];
 
 export default function App() {
   const [isConnected, setIsConnected] = useState(socket.connected);
@@ -33,7 +33,6 @@ export default function App() {
 
   useEffect(() => {
     function onConnect() {
-      socket.on("preview", onPreview);
       setIsConnected(true);
     }
 
@@ -58,7 +57,6 @@ export default function App() {
       setShapes(shape);
       setRoom(room);
       setPreview({});
-      socket.off("preview", onPreview);
     }
 
     function onPreview(allShapes: Record<string, MyShapeConfigsWithTool[]>) {
@@ -71,6 +69,7 @@ export default function App() {
     socket.on("update shapes", onUpdate);
     socket.on("broadcast users", onBroadcastUsers);
     socket.on("joined room", onJoinRoom);
+    socket.on("preview", onPreview);
     return () => {
       socket.off("connect", onConnect);
       socket.off("init", onInit);
@@ -141,7 +140,7 @@ export default function App() {
       {isConnected && room && (
         <>
           <button
-            className="fixed right-5 top-5 h-10 w-20 border bg-white shadow"
+            className="fixed right-5 top-5 h-10 w-40 border bg-white shadow"
             onClick={leaveRoom}
           >
             Leave room
