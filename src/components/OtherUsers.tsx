@@ -21,7 +21,6 @@ export default function OtherUsers() {
 
   useEffect(() => {
     function onBroadcastUsers(users: Users) {
-      delete users[socket.id];
       setUsers(users);
     }
 
