@@ -9,7 +9,6 @@ const ROOMS = ["room1", "room2", "room3", "room4", "room5"];
 export default function App() {
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [room, setRoom] = useState<string | undefined>(undefined);
-  const [shapes, setShapes] = useState<MyShapeConfigsWithTool[]>([]);
   const [preview, setPreview] = useState<
     Record<string, MyShapeConfigsWithTool[]>
   >({});
@@ -27,36 +26,23 @@ export default function App() {
       setIsConnected(false);
     }
 
-    function onInit(value: MyShapeConfigsWithTool[]) {
-      setShapes(value);
-    }
-
-    function onUpdate(shapes: MyShapeConfigsWithTool[]) {
-      setShapes(shapes);
-    }
-
-    function onJoinRoom(room: string, shape: MyShapeConfigsWithTool[]) {
-      setShapes(shape);
-      setRoom(room);
-    }
-
     function onPreview(allShapes: Record<string, MyShapeConfigsWithTool[]>) {
       setPreview(allShapes);
     }
 
+    function onJoinRoom(room: string) {
+      setRoom(room);
+    }
+
+    socket.on("joined room", onJoinRoom);
     socket.on("connect", onConnect);
     socket.on("disconnect", onDisconnect);
-    socket.on("init", onInit);
-    socket.on("update shapes", onUpdate);
-    socket.on("joined room", onJoinRoom);
     socket.on("preview", onPreview);
     return () => {
       socket.off("connect", onConnect);
       socket.off("disconnect", onDisconnect);
-      socket.off("init", onInit);
-      socket.off("update shapes", onUpdate);
-      socket.off("joined room", onJoinRoom);
       socket.off("preview", onPreview);
+      socket.off("joined room", onJoinRoom);
     };
   }, []);
 
@@ -118,7 +104,7 @@ export default function App() {
       )}
       {isConnected && room && (
         <>
-          <DrawingBoard room={room} shapes={shapes} username={username} />
+          <DrawingBoard room={room} username={username} />
           <button
             className="fixed right-5 top-5 h-10 w-40 border bg-white shadow"
             onClick={leaveRoom}

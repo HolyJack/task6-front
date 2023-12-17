@@ -1,5 +1,5 @@
 import { Layer, Stage } from "react-konva";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { KonvaEventObject } from "konva/lib/Node";
 import { socket } from "../socket";
 import TypedShapeMap, { MyShape, Tool } from "../utils/Shapes/Shape";
@@ -17,27 +17,20 @@ export const HEIGHT = 1024;
 export default function DrawingBoard({
   username,
   room,
-  shapes,
 }: {
   username: string;
   room: string;
-  shapes: MyShapeConfigsWithTool[];
 }) {
   const isDrawing = useRef(false);
   const [tool, setTool] = useState<Tool>("line");
   const [color, setColor] = useState<string>("#000000");
   const [size, setSize] = useState<number>(5);
   const [shape, setShape] = useState<MyShapeConfigs | undefined>();
-  const [stagedShape, setStagedShape] = useState<MyShapeConfigs | undefined>();
   const { init: initShape, update: updateShape } = TypedShapeMap[tool as Tool];
 
   function submitShape(shape: MyShapeConfigsWithTool) {
     socket.emit("new shape", room, shape);
   }
-
-  useEffect(() => {
-    setStagedShape(undefined);
-  }, [shapes]);
 
   function handleMouseDown(
     e: KonvaEventObject<MouseEvent> | KonvaEventObject<TouchEvent>,
@@ -51,11 +44,7 @@ export default function DrawingBoard({
   function handleMouseUp() {
     isDrawing.current = false;
     if (shape && tool) submitShape({ tool, color, ...shape });
-    setStagedShape(() => {
-      const s = shape;
-      setShape(undefined);
-      return s;
-    });
+    setShape(undefined);
   }
 
   function handleMouseMove(
@@ -89,8 +78,7 @@ export default function DrawingBoard({
         >
           <Background />
           <Layer>
-            <SubmitedShapes shapes={shapes} />
-            <MyShape tool={tool} {...stagedShape} />
+            <SubmitedShapes />
             <MyShape tool={tool} {...shape} />
           </Layer>
           <OtherUsers />
