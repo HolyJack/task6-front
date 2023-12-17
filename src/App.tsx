@@ -33,6 +33,7 @@ export default function App() {
 
   useEffect(() => {
     function onConnect() {
+      socket.on("preview", onPreview);
       setIsConnected(true);
     }
 
@@ -57,6 +58,7 @@ export default function App() {
       setShapes(shape);
       setRoom(room);
       setPreview({});
+      socket.off("preview", onPreview);
     }
 
     function onPreview(allShapes: Record<string, MyShapeConfigsWithTool[]>) {
@@ -69,7 +71,6 @@ export default function App() {
     socket.on("update shapes", onUpdate);
     socket.on("broadcast users", onBroadcastUsers);
     socket.on("joined room", onJoinRoom);
-    socket.on("preview", onPreview);
     return () => {
       socket.off("connect", onConnect);
       socket.off("init", onInit);
@@ -77,6 +78,7 @@ export default function App() {
       socket.off("update shapes", onUpdate);
       socket.off("broadcast users", onBroadcastUsers);
       socket.off("joined room", onJoinRoom);
+      socket.off("preview", onPreview);
     };
   }, []);
 
@@ -85,6 +87,15 @@ export default function App() {
     localStorage.setItem("username", enteredname);
     setUsername(enteredname);
     setEnteredname("");
+  }
+
+  function leaveRoom() {
+    if (room) {
+      setRoom(() => {
+        socket.emit("leave room");
+        return undefined;
+      });
+    }
   }
 
   return (
@@ -101,7 +112,7 @@ export default function App() {
             />
             <button
               type="submit"
-              className="h-10 w-20 rounded-md border shadow-md hover:bg-black/10"
+              className="h-10 w-20 border shadow hover:bg-black/10"
             >
               OK
             </button>
@@ -128,12 +139,20 @@ export default function App() {
         </div>
       )}
       {isConnected && room && (
-        <DrawingBoard
-          room={room}
-          shapes={shapes}
-          users={users}
-          username={username}
-        />
+        <>
+          <button
+            className="t-5 r-5 fixed h-10 w-10 border shadow"
+            onClick={leaveRoom}
+          >
+            Leave room
+          </button>
+          <DrawingBoard
+            room={room}
+            shapes={shapes}
+            users={users}
+            username={username}
+          />
+        </>
       )}
     </div>
   );
