@@ -27,7 +27,7 @@ export default function App() {
   >({});
   const [users, setUsers] = useState<Users>({});
   const [username, setUsername] = useState(
-    localStorage.getItem("username") || "",
+    sessionStorage.getItem("username") || "",
   );
   const [enteredname, setEnteredname] = useState("");
 
@@ -83,7 +83,7 @@ export default function App() {
 
   function submitForm(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    localStorage.setItem("username", enteredname);
+    sessionStorage.setItem("username", enteredname);
     setUsername(enteredname);
     setEnteredname("");
   }
