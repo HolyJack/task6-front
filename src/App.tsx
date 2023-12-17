@@ -141,7 +141,7 @@ export default function App() {
       {isConnected && room && (
         <>
           <button
-            className="t-5 r-5 fixed h-10 w-10 border shadow"
+            className="fixed right-5 top-5 h-10 w-20 border bg-white shadow"
             onClick={leaveRoom}
           >
             Leave room
