@@ -92,7 +92,7 @@ export default function App() {
   function leaveRoom() {
     if (room) {
       setRoom(() => {
-        socket.emit("leave room");
+        socket.emit("leave room", room);
         return undefined;
       });
     }
