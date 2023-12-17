@@ -26,7 +26,9 @@ export default function App() {
     Record<string, MyShapeConfigsWithTool[]>
   >({});
   const [users, setUsers] = useState<Users>({});
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState(
+    localStorage.getItem("username") || "",
+  );
   const [enteredname, setEnteredname] = useState("");
 
   useEffect(() => {
@@ -80,6 +82,7 @@ export default function App() {
 
   function submitForm(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    localStorage.setItem("username", enteredname);
     setUsername(enteredname);
     setEnteredname("");
   }
