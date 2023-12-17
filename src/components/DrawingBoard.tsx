@@ -76,6 +76,7 @@ export default function DrawingBoard({
           onTouchMove={handleMouseMove}
           onTouchEnd={handleMouseUp}
           onPointerOut={handleMouseUp}
+          className="cursor-crosshair"
         >
           <Background />
           <Layer listening={false}>

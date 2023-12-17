@@ -1,5 +1,5 @@
 import { io } from "socket.io-client";
 
-const URL = "https://drawing-board-backend-8fb2e38f4ebb.herokuapp.com";
+const URL = import.meta.env.VITE_SERVER_URL;
 
 export const socket = io(URL);
