@@ -56,7 +56,6 @@ export default function App() {
     function onJoinRoom(room: string, shape: MyShapeConfigsWithTool[]) {
       setShapes(shape);
       setRoom(room);
-      setPreview({});
     }
 
     function onPreview(allShapes: Record<string, MyShapeConfigsWithTool[]>) {
