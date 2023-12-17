@@ -32,22 +32,24 @@ export default function OtherUsers() {
 
   return (
     <Layer listening={false}>
-      {Object.keys(users).map((user) => {
-        const userData = users[user] as UserData;
+      {Object.keys(users).map((id) => {
+        const userData = users[id] as UserData;
         const { username, shape, color, pos } = userData;
         return (
           <>
-            <Group {...pos}>
-              <Circle key={user} radius={7} fill={color} />
-              <Text
-                text={username}
-                fill={color}
-                fontSize={18}
-                offsetY={7}
-                offsetX={-8}
-              />
-            </Group>
-            <MyShape key={user + "C"} tool={shape?.tool || ""} {...shape} />
+            {id !== socket.id && (
+              <Group {...pos}>
+                <Circle key={id} radius={7} fill={color} />
+                <Text
+                  text={username}
+                  fill={color}
+                  fontSize={18}
+                  offsetY={7}
+                  offsetX={-8}
+                />
+              </Group>
+            )}
+            <MyShape key={id + "C"} tool={shape?.tool || ""} {...shape} />
           </>
         );
       })}

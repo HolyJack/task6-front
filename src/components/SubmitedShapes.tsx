@@ -17,6 +17,7 @@ export function SubmitedShapes() {
       socket.off("update shapes", onUpdate);
     };
   }, []);
+
   return (
     <Group>
       {shapes.map((shape, i) => (
