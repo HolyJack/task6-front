@@ -85,6 +85,7 @@ export default function DrawingBoard({
           onTouchStart={handleMouseDown}
           onTouchMove={handleMouseMove}
           onTouchEnd={handleMouseUp}
+          onPointerOut={handleMouseUp}
         >
           <Layer listening={false}>
             <Rect x={0} y={0} width={WIDTH} height={HEIGHT} fill="#ffffff" />
