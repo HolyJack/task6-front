@@ -31,6 +31,17 @@ export default function DrawingBoard({
   const [shapes, setShapes] = useState<MyShapeConfigsWithTool[]>([]);
   const { init: initShape, update: updateShape } = TypedShapeMap[tool as Tool];
 
+  useEffect(() => {
+    function onInitialShapes(shapes: MyShapeConfigsWithTool[]) {
+      setShapes(shapes);
+    }
+    socket.emit("initial shapes", room);
+    socket.on("initial shapes", onInitialShapes);
+    return () => {
+      socket.off("initial shapes", onInitialShapes);
+    };
+  }, [room]);
+
   function submitShape(shape: MyShapeConfigsWithTool) {
     socket.emit("new shape", room, shape);
   }
