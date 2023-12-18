@@ -9,7 +9,7 @@ export type MyShapeConfigs =
   | RectConfig
   | TextConfig
   | CircleConfig;
-export type MyShapeConfigsWithTool = MyShapeConfigs & { tool: string };
+export type MyShapeConfigsWithTool = MyShapeConfigs & { tool?: string };
 
 export type CursorPosition = {
   x: number;

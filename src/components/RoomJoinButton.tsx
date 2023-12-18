@@ -6,22 +6,33 @@ import { socket } from "../socket";
 import { MyShapeConfigsWithTool } from "../utils/Shapes/ShapeTypes";
 
 type RoomJoinButtonProps = {
-  shapes: MyShapeConfigsWithTool[];
+  initialShapes: MyShapeConfigsWithTool[];
   room: string;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
 export default function RoomJoinButton({
-  shapes,
+  initialShapes,
   room,
   ...props
 }: RoomJoinButtonProps) {
   const ref = useRef<HTMLButtonElement>(null);
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
+  const [shapes, setShapes] = useState(initialShapes);
 
   function joinRoom() {
     socket.emit("join room", room);
   }
+
+  useEffect(() => {
+    function onUpdatePreview(shape: MyShapeConfigsWithTool) {
+      setShapes((prev) => prev.concat([shape]));
+    }
+    socket.on(`update preview ${room}`, onUpdatePreview);
+    return () => {
+      socket.off(`update preview ${room}`, onUpdatePreview);
+    };
+  }, [room]);
 
   useEffect(() => {
     setHeight(ref.current?.clientHeight || 0);
@@ -38,10 +49,7 @@ export default function RoomJoinButton({
       >
         <Layer listening={false}>
           <Rect x={0} y={0} width={width} height={height} fill="#ffffff" />
-          {shapes &&
-            shapes.map((shape) => {
-              return <MyShape {...shape} />;
-            })}
+          {shapes && shapes.map((shape, i) => <MyShape key={i} {...shape} />)}
         </Layer>
       </Stage>
     </button>

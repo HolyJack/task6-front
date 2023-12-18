@@ -21,6 +21,7 @@ export default function OtherUsers() {
 
   useEffect(() => {
     function onBroadcastUsers(users: Users) {
+      delete users[socket.id];
       setUsers(users);
     }
 
@@ -37,19 +38,17 @@ export default function OtherUsers() {
         const { username, shape, color, pos } = userData;
         return (
           <>
-            {id !== socket.id && (
-              <Group {...pos}>
-                <Circle key={id} radius={7} fill={color} />
-                <Text
-                  text={username}
-                  fill={color}
-                  fontSize={18}
-                  offsetY={7}
-                  offsetX={-8}
-                />
-              </Group>
-            )}
-            <MyShape key={id + "C"} tool={shape?.tool || ""} {...shape} />
+            <Group {...pos}>
+              <Circle key={id} radius={7} fill={color} />
+              <Text
+                text={username}
+                fill={color}
+                fontSize={18}
+                offsetY={7}
+                offsetX={-8}
+              />
+            </Group>
+            <MyShape key={id + "C"} tool={shape?.tool} {...shape} />
           </>
         );
       })}

@@ -10,6 +10,7 @@ export function SubmitedShapes({ room }: { room: string }) {
   useEffect(() => {
     function onInitialShapes(shapes: MyShapeConfigsWithTool[]) {
       setShapes(shapes);
+      console.log("hello");
     }
 
     function onAddNewShape(shape: MyShapeConfigsWithTool) {
