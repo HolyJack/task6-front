@@ -4,19 +4,26 @@ import { MyShapeConfigsWithTool } from "../utils/Shapes/ShapeTypes";
 import { useEffect, useState } from "react";
 import { socket } from "../socket";
 
-export function SubmitedShapes() {
+export function SubmitedShapes({ room }: { room: string }) {
   const [shapes, setShapes] = useState<MyShapeConfigsWithTool[]>([]);
 
   useEffect(() => {
-    function onUpdate(shapes: MyShapeConfigsWithTool[]) {
+    function onInitialShapes(shapes: MyShapeConfigsWithTool[]) {
       setShapes(shapes);
     }
 
-    socket.on("update shapes", onUpdate);
+    function onAddNewShape(shape: MyShapeConfigsWithTool) {
+      setShapes((prev) => prev.concat([shape]));
+    }
+
+    socket.emit("initial shapes", room);
+    socket.on("inital shapes", onInitialShapes);
+    socket.on("add new shape", onAddNewShape);
     return () => {
-      socket.off("update shapes", onUpdate);
+      socket.off("initial shapes", onInitialShapes);
+      socket.off("add new shape", onAddNewShape);
     };
-  }, []);
+  }, [room]);
 
   return (
     <Group>

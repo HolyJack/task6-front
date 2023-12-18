@@ -80,7 +80,7 @@ export default function DrawingBoard({
         >
           <Background />
           <Layer listening={false}>
-            <SubmitedShapes />
+            <SubmitedShapes room={room} />
             <MyShape tool={tool} {...shape} />
           </Layer>
           <OtherUsers />
