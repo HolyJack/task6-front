@@ -26,6 +26,7 @@ export default function DrawingBoard({
   const [color, setColor] = useState<string>("#000000");
   const [size, setSize] = useState<number>(5);
   const [shape, setShape] = useState<MyShapeConfigs | undefined>();
+  const [shapes, setShapes] = useState<MyShapeConfigsWithTool[]>([]);
   const { init: initShape, update: updateShape } = TypedShapeMap[tool as Tool];
 
   function submitShape(shape: MyShapeConfigsWithTool) {
@@ -44,6 +45,7 @@ export default function DrawingBoard({
   function handleMouseUp() {
     isDrawing.current = false;
     if (shape && tool) submitShape({ tool, color, ...shape });
+    shape && setShapes((prev) => prev.concat([{ ...shape, tool }]));
     setShape(undefined);
   }
 
@@ -80,7 +82,13 @@ export default function DrawingBoard({
         >
           <Background />
           <Layer listening={false}>
-            <SubmitedShapes room={room} />
+            <SubmitedShapes
+              room={room}
+              shapes={shapes}
+              updateShapes={(shapes: MyShapeConfigsWithTool[]) =>
+                setShapes((prev) => prev.concat(shapes))
+              }
+            />
             <MyShape tool={tool} {...shape} />
           </Layer>
           <OtherUsers />

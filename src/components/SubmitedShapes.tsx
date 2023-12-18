@@ -1,20 +1,25 @@
 import { Group } from "react-konva";
 import { MyShape } from "../utils/Shapes/Shape";
 import { MyShapeConfigsWithTool } from "../utils/Shapes/ShapeTypes";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { socket } from "../socket";
 
-export function SubmitedShapes({ room }: { room: string }) {
-  const [shapes, setShapes] = useState<MyShapeConfigsWithTool[]>([]);
-
+export function SubmitedShapes({
+  shapes,
+  updateShapes,
+  room,
+}: {
+  shapes: MyShapeConfigsWithTool[];
+  updateShapes: (shapes: MyShapeConfigsWithTool[]) => void;
+  room: string;
+}) {
   useEffect(() => {
     function onInitialShapes(shapes: MyShapeConfigsWithTool[]) {
-      setShapes(shapes);
-      console.log("hello");
+      updateShapes(shapes);
     }
 
     function onAddNewShape(shape: MyShapeConfigsWithTool) {
-      setShapes((prev) => prev.concat([shape]));
+      updateShapes([shape]);
     }
 
     socket.emit("initial shapes", room);
@@ -24,7 +29,7 @@ export function SubmitedShapes({ room }: { room: string }) {
       socket.off("initial shapes", onInitialShapes);
       socket.off("add new shape", onAddNewShape);
     };
-  }, [room]);
+  }, [room, updateShapes]);
 
   return (
     <Group>
