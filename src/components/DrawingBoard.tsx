@@ -2,7 +2,11 @@ import { Layer, Stage } from "react-konva";
 import { useEffect, useRef, useState } from "react";
 import { KonvaEventObject } from "konva/lib/Node";
 import { socket } from "../socket";
-import TypedShapeMap, { MyShape, Tool } from "../utils/Shapes/Shape";
+import TypedShapeMap, {
+  MyShape,
+  Tool,
+  tool as tools,
+} from "../utils/Shapes/Shape";
 import {
   MyShapeConfigs,
   MyShapeConfigsWithTool,
@@ -119,10 +123,11 @@ export default function DrawingBoard({
       </section>
       <section className="fixed left-5 top-5 flex flex-col rounded border bg-white p-5 shadow-xl">
         <select value={tool} onChange={(e) => setTool(e.target.value as Tool)}>
-          <option value="line">line</option>
-          <option value="rectangle">rectangle</option>
-          <option value="circle">circle</option>
-          <option value="eraser">eraser</option>
+          {tools.map((tool) => (
+            <option key={tool} value={tool}>
+              {tool}
+            </option>
+          ))}
         </select>
         <input
           type="color"
