@@ -10,6 +10,7 @@ import {
 import OtherUsers from "./OtherUsers";
 import Background from "./Background";
 import { SubmitedShapes } from "./SubmitedShapes";
+import Konva from "konva";
 
 export const WIDTH = 1024;
 export const HEIGHT = 1024;
@@ -22,6 +23,7 @@ export default function DrawingBoard({
   room: string;
 }) {
   const isDrawing = useRef(false);
+  const ref = useRef<Konva.Stage>(null);
   const [tool, setTool] = useState<Tool>("line");
   const [color, setColor] = useState<string>("#000000");
   const [size, setSize] = useState<number>(5);
@@ -64,10 +66,20 @@ export default function DrawingBoard({
     });
   }
 
+  function exportStage() {
+    const dataURL = ref.current?.toDataURL();
+    const link: HTMLAnchorElement = document.createElement("a");
+    if (!link || !dataURL) return;
+    link.href = dataURL;
+    link.download = `${room}-${Date.now()}`;
+    link.click();
+  }
+
   return (
     <div className="flex h-full w-full touch-none overflow-scroll bg-gray-300">
       <section className="mx-auto h-full">
         <Stage
+          ref={ref}
           width={WIDTH}
           height={HEIGHT}
           onMouseDown={handleMouseDown}
@@ -114,6 +126,9 @@ export default function DrawingBoard({
             value={size}
             onChange={(e) => setSize(+e.target.value)}
           />
+        </div>
+        <div>
+          <button onClick={exportStage}>Export</button>
         </div>
       </section>
     </div>
