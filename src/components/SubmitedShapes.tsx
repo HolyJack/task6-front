@@ -17,7 +17,7 @@ export function SubmitedShapes({ room }: { room: string }) {
     }
 
     socket.emit("initial shapes", room);
-    socket.on("inital shapes", onInitialShapes);
+    socket.on("initial shapes", onInitialShapes);
     socket.on("add new shape", onAddNewShape);
     return () => {
       socket.off("initial shapes", onInitialShapes);
