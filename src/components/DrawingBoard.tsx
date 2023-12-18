@@ -1,5 +1,5 @@
 import { Layer, Stage } from "react-konva";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { KonvaEventObject } from "konva/lib/Node";
 import { socket } from "../socket";
 import TypedShapeMap, { MyShape, Tool } from "../utils/Shapes/Shape";
