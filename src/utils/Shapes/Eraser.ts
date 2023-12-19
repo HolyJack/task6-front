@@ -8,7 +8,6 @@ const initEraser: InitShapeFunction<LineConfig> = (shape) => {
     globalCompositeOperation: "destination-out",
   };
 };
-
 const eraser: ToolConfig<LineConfig> = { ...line, init: initEraser };
 
 export const name = "eraser";

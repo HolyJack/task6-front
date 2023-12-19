@@ -50,7 +50,7 @@ export default function App() {
 
   if (!isConnected)
     return (
-      <div className="w-screen">
+      <div className="h-screen w-screen">
         <p className="mx-auto">Awaiting Connection...</p>
       </div>
     );
@@ -58,9 +58,13 @@ export default function App() {
   if (!room)
     return (
       <div className="flex h-screen w-screen flex-col">
-        {!username && <SubmitUsername onSubmit={submitUsername} />}
-        {username && <WelcomeMessage username={username} />}
-        <Preview disabled={username ? false : true} />
+        <header className="flex h-32 items-center justify-center border">
+          {!username && <SubmitUsername onSubmit={submitUsername} />}
+          {username && <WelcomeMessage username={username} />}
+        </header>
+        <main className="h-[cacl(100%-8rem)] w-screen overflow-y-auto">
+          <Preview disabled={username ? false : true} />
+        </main>
       </div>
     );
 

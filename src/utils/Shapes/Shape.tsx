@@ -5,6 +5,7 @@ import {
   MyShapeConfigs,
   MyShapeConfigsWithTool,
   ToolConfig,
+  ToolConfigMap,
 } from "./ShapeTypes";
 import line, { name as l } from "./Line";
 import rectangle, { name as r } from "./Rect";
@@ -14,39 +15,40 @@ import rectangleFill, { name as rf } from "./RectFill";
 import circleFill, { name as cf } from "./CircleFill";
 import ellipse, { name as e } from "./Ellipse";
 import ellipseFill, { name as ef } from "./EllipseFill";
+import star, { name as s } from "./Star";
+import starFill, { name as sf } from "./StarFill";
 
 const tool: string[] = [];
-const ShapeMap: Record<string, ToolConfig<MyShapeConfigs>> = {};
+const ShapeMap: ToolConfigMap = {};
 
-ShapeMap[l] = line;
-ShapeMap[r] = rectangle;
-//@ts-expect-error: TS says types are incompitable
-ShapeMap[e] = ellipse;
-ShapeMap[c] = circle;
-ShapeMap[rf] = rectangleFill;
-ShapeMap[cf] = circleFill;
-//@ts-expect-error: TS says types are incompitable
-ShapeMap[ef] = ellipseFill;
-ShapeMap[er] = eraser;
+function registerShape<T>(name: string, toolConfig: ToolConfig<T>) {
+  tool.push(name);
+  ShapeMap[name] = toolConfig;
+}
 
-tool.push(l);
-tool.push(r);
-tool.push(e);
-tool.push(c);
-tool.push(rf);
-tool.push(cf);
-tool.push(ef);
-tool.push(er);
+registerShape(l, line);
+registerShape(r, rectangle);
+registerShape(e, ellipse);
+registerShape(s, star);
+registerShape(c, circle);
+
+registerShape(er, eraser);
+registerShape(rf, rectangleFill);
+registerShape(cf, circleFill);
+registerShape(ef, ellipseFill);
+registerShape(sf, starFill);
 
 export type Tool =
   | typeof l
   | typeof r
   | typeof e
   | typeof c
+  | typeof s
   | typeof rf
   | typeof cf
   | typeof ef
-  | typeof er;
+  | typeof er
+  | typeof sf;
 
 const TypedShapeMap: Record<
   Tool,

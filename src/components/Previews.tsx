@@ -24,17 +24,17 @@ export default function Preview({ disabled }: { disabled: boolean }) {
   }, []);
 
   return (
-    <div className="flex h-full flex-wrap justify-evenly gap-5 p-10">
+    <section className="container mx-auto flex h-fit flex-wrap justify-evenly gap-5 p-10">
       {Object.keys(initialData).map((room) => (
         <RoomJoinButton
           key={room}
           value={room}
           room={room}
           initialShapes={initialData[room]}
-          className="aspect-square h-72 border shadow"
+          className="aspect-square h-72 border shadow hover:shadow-xl hover:shadow-blue-100"
           disabled={disabled}
         />
       ))}
-    </div>
+    </section>
   );
 }
